@@ -1,23 +1,22 @@
 var DebugON = true;
 
-// read and set any environment variables with the dotenv package
-require("dotenv").config();
+//*******************************************************************************/
+//  Require all of the needed library packages
+require("dotenv").config();  // read and set any environment variables with the dotenv package
+var keys = require("./keys.js"); // import the spotify keys.js file and store it in a variable.
+var Spotify = require('node-spotify-api');
+var axios = require("axios");
+var moment = require("moment");
+var inquirer = require("inquirer");
 
-// import the spotify keys.js file and store it in a variable.
-var keys = require("./keys.js");
-
-// 
 var spotify = new Spotify(keys.spotify);
 
-/*******************************************************************************/
-// Include the axios npm package (Don't forget to run "npm install axios" in this folder first!)
-var axios = require("axios");
-
-/**********************************************************************************/
+var exitFlag = false;
 
 var NumInputParams = process.argv.length;
+
 if (DebugON) {
-    for (var i=0; i<=NumInputParams;i++)
+    for (var i=0; i<NumInputParams;i++)
         console.log ("*** " + process.argv[i]);
 } // if DebugON    
 
@@ -27,6 +26,7 @@ if (NumInputParams>=2) {  //  check for valid input action
     var Action = process.argv[2];
     var SearchStr = process.argv.slice(3).join(" ");
 
+    if (DebugON) console.log ("** Action: " + Action + "\n** SearchStr: " + SearchStr);
     switch (Action) {
         case "concert-this" :
             ConcertThis(SearchStr)
@@ -51,8 +51,58 @@ if (NumInputParams>=2) {  //  check for valid input action
     }  // switch (Action)
 
 }    // if (NumParams >=3)
-else {  // not enough input parameters
-    console.log ("***ERROR***  Not enough input parameters");
+else {  // input parameters not specified. prompt the user for input
+
+    // prompt until the user says to quit
+
+    while (!exitFlag) {
+
+        // Created a series of prompts
+        inquirer.prompt([
+
+            { // prompt user to select an action from the list
+            type: "list",
+            name: "SelectAction",
+            message: "Select what you would like to do:",
+            choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-this-says", "quit"]
+            },
+
+            {    // prompt the user to unput the appropriate search string
+            type: "input",
+            name: "InputSearchStr",
+            message: "Input corresponding band, artist, song, movie or filename"
+            },
+        
+        ]).then(function(user) {
+
+            switch (user.SelectAction) {
+                case "concert-this" :
+                    ConcertThis(user.InputSearchStr)
+                    break;
+
+                case "spotify-this-song" :
+                    SpotifyThis(user.InputSearchStr)
+                    break;
+
+                case "movie-this" :
+                    MovieThis(user.InputSearchStr)
+                    break;
+                
+                case "do-what-it-says" :
+                    DoThis(user.InputSearchStr)
+                    break;
+
+                case "quit" :
+                    exitFlag = true;
+                    break;
+
+                default :
+                    console.log ("Unrecognized action " + Action);
+                    break;
+            }  // switch
+        });  //  .then(function(user)
+    }  // while (!exitFlag)
+  
 }  // else
 
 //***********************************************************************************/
@@ -61,7 +111,7 @@ else {  // not enough input parameters
 //  input band name
 //***********************************************************************************/
 function ConcertThis(Band) {
-
+    if (DebugON) console.log ("** In ConcertThis() " + Band);
     if (!Band) {
         console.log ("***ERROR*** No band specified");
         return;
@@ -103,6 +153,29 @@ function ConcertThis(Band) {
 //***********************************************************************************/
 function SpotifyThis(Song) {
     if (DebugON)  console.log ("** in SpotifyThis() " + Song);
+
+	if (!Song) {
+		Song = "The Sign:Ace of Base";
+	}
+
+	spotify.search({
+		type: 'artist,track',
+		query: Song
+
+	}, function (err, response) {
+		if (err) {
+			return console.log("Spotify Query Error occurred: " + err);
+		}
+
+		var SongResults = "----------------------------------------------------------------" +
+			"\nArtist(s): " + response.tracks.items[0].artists[0].name +
+			"\nSong Name: " + response.tracks.items[0].name +
+			"\nAlbum Name: " + response.tracks.items[0].album.name +
+			"\nPreview Link: " + response.tracks.items[0].external_urls.spotify +
+			"\n--------------------------------------------------------------------";
+		console.log(SongResults);
+
+	});  // spotify.search()
 
 }  // SpotifyThis()
 
@@ -147,6 +220,7 @@ function MovieThis(Movie) {
 //  file name
 //***********************************************************************************/
 function DoThis(File) {
+    if (DebugON)  console.log ("** in DoThis() " + File);
 
     if (!File) {
         console.log ("***ERROR*** No file specified");
