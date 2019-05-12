@@ -12,6 +12,8 @@ The purpose of this assignment is to create a node.js based LIRI app.  LIRI is a
 
 Please see the Homework-Instructions.md file for the specific assignment requirements.
 
+I deviated from the homework instructions in that I added an extra option for the user to be prompted to input the action and the search string.
+
 ## Node Packages Used
 The following packages are needed (npm install) to run the program
 
@@ -100,7 +102,7 @@ The following are screen captures of each of the test runs for the "do-what-it-s
 ![Movie4](./images/Movie4.PNG)
 
 
-BONUS- The following are screen captures of each test run no action or search string causing the user to be prompted:
+BONUS- The following are screen captures of each test run with no action or search string causing the user to be prompted for the information:
 ### node liri 
 ![Concert2](./images/Concert2.PNG)
 
