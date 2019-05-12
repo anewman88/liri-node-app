@@ -14,7 +14,7 @@ Please see the Homework-Instructions.md file for the specific assignment require
 
 I deviated from the homework instructions in that I added an extra option for the user to be prompted to input the action and the search string if none was specified on the command line.
 
-I did not add the functionality to save the info to a log file because this can simply be done at the bash prompt line by using the following syntax:
+I did not add the functionality to save/append the info to a log file because this can simply be done at the bash prompt line by using the following syntax:
 
 node liri concert-this Goo Goo Dolls >> log.txt
 ![Log](./images/Log.PNG)
