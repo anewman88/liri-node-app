@@ -1,4 +1,4 @@
-var DebugON = true;
+var DebugON = false;
 
 //*******************************************************************************/
 //  Require all of the needed library packages
@@ -6,25 +6,32 @@ require("dotenv").config();  // read and set any environment variables with the 
 var keys = require("./keys.js"); // import the spotify keys.js file and store it in a variable.
 var Spotify = require('node-spotify-api');
 var axios = require("axios");
+var fs = require("fs");
 var moment = require("moment");
 var inquirer = require("inquirer");
 
 var spotify = new Spotify(keys.spotify);
 
-var exitFlag = false;
-
+// Determine the number of input parameters
 var NumInputParams = process.argv.length;
 
 if (DebugON) {
-    for (var i=0; i<NumInputParams;i++)
+    console.log ("Num input Params" + NumInputParams);
+    for (var i=0; i<NumInputParams; i++)
         console.log ("*** " + process.argv[i]);
 } // if DebugON    
 
-
 // Check the input parameters
-if (NumInputParams>=2) {  //  check for valid input action
+if (NumInputParams > 2) {  //  check for valid input action
     var Action = process.argv[2];
-    var SearchStr = process.argv.slice(3).join(" ");
+
+    if (NumInputParams > 3) { // get the search string
+        var SearchStr = process.argv.slice(3).join(" ");
+    }
+    else {
+        console.log ("** Error *** No search element specified");
+        return;
+    }
 
     if (DebugON) console.log ("** Action: " + Action + "\n** SearchStr: " + SearchStr);
     switch (Action) {
@@ -50,13 +57,23 @@ if (NumInputParams>=2) {  //  check for valid input action
 
     }  // switch (Action)
 
-}    // if (NumParams >=3)
+}    // if (NumParams > 2)
 else {  // input parameters not specified. prompt the user for input
 
-    // prompt until the user says to quit
+    PromptUser();
 
-    while (!exitFlag) {
+}  // else
 
+//***********************************************************************************/
+//  function PromptUser() 
+//  The purpose of this function is to prompt the user for information.  If first
+//  asks the user to select the type of search.  Then prompts the user for the 
+//  corresponding band, movie, song, or file name.
+//***********************************************************************************/
+function PromptUser() {
+    if (DebugON) console.log ("Prompt for input");
+
+        if (DebugON) console.log ("Prompt the user");
         // Created a series of prompts
         inquirer.prompt([
 
@@ -64,13 +81,13 @@ else {  // input parameters not specified. prompt the user for input
             type: "list",
             name: "SelectAction",
             message: "Select what you would like to do:",
-            choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-this-says", "quit"]
+            choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says", "quit"]
             },
 
             {    // prompt the user to unput the appropriate search string
             type: "input",
             name: "InputSearchStr",
-            message: "Input corresponding band, artist, song, movie or filename"
+            message: "Input corresponding band/artist, song, movie or filename"
             },
         
         ]).then(function(user) {
@@ -78,7 +95,7 @@ else {  // input parameters not specified. prompt the user for input
             switch (user.SelectAction) {
                 case "concert-this" :
                     ConcertThis(user.InputSearchStr)
-                    break;
+                    break;concert
 
                 case "spotify-this-song" :
                     SpotifyThis(user.InputSearchStr)
@@ -93,7 +110,7 @@ else {  // input parameters not specified. prompt the user for input
                     break;
 
                 case "quit" :
-                    exitFlag = true;
+                    return;
                     break;
 
                 default :
@@ -101,9 +118,8 @@ else {  // input parameters not specified. prompt the user for input
                     break;
             }  // switch
         });  //  .then(function(user)
-    }  // while (!exitFlag)
-  
-}  // else
+
+}  // function PromptUser()
 
 //***********************************************************************************/
 //  function ConcertThis(Band) 
@@ -111,13 +127,13 @@ else {  // input parameters not specified. prompt the user for input
 //  input band name
 //***********************************************************************************/
 function ConcertThis(Band) {
-    if (DebugON) console.log ("** In ConcertThis() " + Band);
+
     if (!Band) {
         console.log ("***ERROR*** No band specified");
         return;
 	}  // if (!Band)
 
-    if (DebugON)  console.log ("** in ConcertThis() " + Band);
+    if (DebugON)  console.log ("** In ConcertThis() " + Band);
 
     axios.get("https://rest.bandsintown.com/artists/"+Band+"/events?app_id=codingbootcamp").then(
     function (response) {
@@ -127,10 +143,17 @@ function ConcertThis(Band) {
         // limit the listings to the 5 upcoming dates
         if (NumConcerts > 5)
             NumConcerts = 5;
+       
+        var Banner =
+        "--------------------------------------------------------------------" +
+        "\n                     C O N C E R T - T H I S" +
+        "\n--------------------------------------------------------------------" +
+        "\nBand or Artist: " + Band;
+        console.log(Banner);
 
         for (var i = 0; i < NumConcerts; i++) {
             // create concert results string
-            var ConcertResults = "--------------------------------------------------------------------" +
+            var ConcertResults = 
                 "\nVenue Name: " + response.data[i].venue.name +
                 "\nVenue Location: " + response.data[i].venue.city +
                 "\nDate of the Event: " + moment(response.data[i].datetime).format("MM/DD/YYYY") +
@@ -141,7 +164,7 @@ function ConcertThis(Band) {
 
     })  // function(response)
     .catch(function (error) { // error handler
-        console.log(error);
+        console.log("axios.get Error: " + error);
     });  // get.axios()
 
 }  // ConcertThis()
@@ -167,8 +190,11 @@ function SpotifyThis(Song) {
 			return console.log("Spotify Query Error occurred: " + err);
 		}
 
-		var SongResults = "----------------------------------------------------------------" +
-			"\nArtist(s): " + response.tracks.items[0].artists[0].name +
+		var SongResults = 
+            "--------------------------------------------------------------------" +
+            "\n                     S P O T I F Y - T H I S" +
+            "\n--------------------------------------------------------------------" +
+            "\nArtist(s): " + response.tracks.items[0].artists[0].name +
 			"\nSong Name: " + response.tracks.items[0].name +
 			"\nAlbum Name: " + response.tracks.items[0].album.name +
 			"\nPreview Link: " + response.tracks.items[0].external_urls.spotify +
@@ -196,20 +222,23 @@ function MovieThis(Movie) {
     axios.get("http://www.omdbapi.com/?t="+Movie+"&y=&plot=short&apikey=trilogy").then(
     function (response) {
         // Create Movie Results string 
-        var MovieResults = "--------------------------------------------------------------------" +
-            "\nTitle " + response.data.Title +
-            "\nYear: " + response.data.Year +
-            "\nIMDB Rating: " + response.data.Ratings[0].Value +
-            "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value +
-            "\nCountry: " + response.data.Country +
-            "\nLanguage: " + response.data.Language +
-            "\nPlot: " + response.data.Plot +
-            "\nActors: " + response.data.Actors +
+        var MovieResults = 
+            "--------------------------------------------------------------------" +
+            "\n                      M O V I E - T H I S" +
+            "\n--------------------------------------------------------------------" +
+            "\n-Title " + response.data.Title +
+            "\n-Year: " + response.data.Year +
+            "\n-IMDB Rating: " + response.data.Ratings[0].Value +
+            "\n-Rotten Tomatoes Rating: " + response.data.Ratings[1].Value +
+            "\n-Country: " + response.data.Country +
+            "\n-Language: " + response.data.Language +
+            "\n-Plot: " + response.data.Plot +
+            "\n-Actors: " + response.data.Actors +
             "\n--------------------------------------------------------------------";
         console.log(MovieResults);
     })  // function(response)
     .catch(function (error) {
-        console.log(error);
+        console.log("axios.get Error: " + error);
 	});  // axios.get
 
 }  // MovieThis()
