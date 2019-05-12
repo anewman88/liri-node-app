@@ -10,6 +10,8 @@ SMU Programming Bootcamp Spring 2019
 
 The purpose of this assignment is to create a node.js based LIRI app.  LIRI is a _Language_ Interpretation and Recognition Interface. LIRI is a command line node app that takes in parameters and gives back data. LIRI quiries Spotify for songs, Bands in Town for concerts, and OMDB for movies.
 
+Please see the Homework-Instructions.md file for the specific assignment requirements.
+
 ## Node Packages Used
 The following packages are needed (npm install) to run the program
 
@@ -41,7 +43,7 @@ SPOTIFY_SECRET=your-spotify-secret
 ```
 
 ## Running The Program from the BASH command line.
-In the project directory, the program can be executed at the command line in two ways.  
+In the project directory, the program can be executed at the command line in two ways: 
 
 ### User Prompt
 The program can be run as follows and will prompt the user for input.
@@ -50,14 +52,7 @@ node liri.js
 
 The program will prompt you for the type of action you want to perform:
 
-![Prompt](Capture1.png)
-
-? Select what you would like to do: (Use arrow keys)
-> concert-this 
-  spotify-this-song 
-  movie-this 
-  do-what-it-says 
-  quit
+![Prompt](./images/Capture1.PNG)
 
 Use the arrow keys to highlight the desired action and press enter.
 
@@ -78,6 +73,41 @@ spotify-this-song 'song name'
 movie-this 'movie name'
 concert-this 'artist/band name'
 do-what-it-says 'filename'
+
+
+## Test Runs
+
+The following are screen captures of each of the test runs where both the action and the search string were entered:
+
+### node liri concert-this Goo Goo Dolls
+[Concert3](./images/Concert3.PNG)
+
+### node liri spotify-this-song Abracadabra
+[Spotify3](./images/Spotify3.PNG)
+
+### node liri movie-this A Few Good Men
+[Movie3](./images/Movie3.PNG)
+
+The following are screen captures of each of the test runs for the "do-what-it-says <filename>" option.  It was run 3 times with a band, a song and a movie:
+  
+### node liri do-what-it-says concert.txt
+[Concert2](./images/Concert2.PNG)
+
+### node liri do-what-it-says spotify.txt
+[Spotify2](./images/Spotify2.PNG)
+
+### node liri do-what-it-says movie.txt
+[Movie2](./images/Movie2.PNG)
+
+
+BONUS- The following are screen captures of each test run no action or search string causing the user to be prompted:
+### node liri 
+[Concert1](./images/Concert1.PNG)
+
+[Spotify1](./images/Spotify1.PNG)
+
+[Movie1](./images/Movie1.PNG)
+  
 
 ================================================
 
