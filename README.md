@@ -69,13 +69,14 @@ Use the following command line syntax to input the requested action and search s
 
 node liri.js command searchStr
 
-Where command is one of the following and searchStr (no quotes):
+Where 'command' is one of the following 
 
-spotify-this-song 'song name'
-movie-this 'movie name'
-concert-this 'artist/band name'
-do-what-it-says 'filename'
+- spotify-this-song 'song name'
+- movie-this 'movie name'
+- concert-this 'artist/band name'
+- do-what-it-says 'filename'
 
+And 'searchStr' is the item to be searched or queried.
 
 ## Test Runs
 
