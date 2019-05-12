@@ -17,7 +17,7 @@ I deviated from the homework instructions in that I added an extra option for th
 I did not add the function to record the info to a file in addition to console logging it because this can simply be done at the bash prompt line by using the following syntax:
 
 node liri concert-this Goo Goo Dolls >> log.txt
-![Log](./images/log.PNG)
+![Log](./images/Log.PNG)
 
 ## Node Packages Used
 The following packages are needed (npm install) to run the program
