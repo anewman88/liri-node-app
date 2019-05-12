@@ -108,16 +108,16 @@ The following are screen captures of each of the test runs for the "do-what-it-s
 
 BONUS- The following are screen captures of each test run with no action or search string causing the user to be prompted for the information:
 ### node liri 
-![Concert2](./images/Concert2.PNG)
-
-![Spotify2](./images/Spotify2.PNG)
-
-![Movie2](./images/Movie2.PNG)
-
 ![Concert](./images/Concert.PNG)
 
 ![Spotify](./images/Spotify.PNG)
 
 ![Movie](./images/Movie.PNG)
+
+![Concert2](./images/Concert2.PNG)
+
+![Spotify2](./images/Spotify2.PNG)
+
+![Movie2](./images/Movie2.PNG)
 
 
