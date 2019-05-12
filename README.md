@@ -91,13 +91,13 @@ The following are screen captures of each of the test runs where both the action
 The following are screen captures of each of the test runs for the "do-what-it-says <filename>" option.  It was run 3 times with a band, a song and a movie:
   
 ### node liri do-what-it-says concert.txt
-![Concert](./images/Concert.PNG)
+![Concert4](./images/Concert4.PNG)
 
 ### node liri do-what-it-says spotify.txt
-![Spotify](./images/Spotify.PNG)
+![Spotify4](./images/Spotify4.PNG)
 
 ### node liri do-what-it-says movie.txt
-![Movie](./images/Movie.PNG)
+![Movie4](./images/Movie4.PNG)
 
 
 BONUS- The following are screen captures of each test run no action or search string causing the user to be prompted:
@@ -107,5 +107,11 @@ BONUS- The following are screen captures of each test run no action or search st
 ![Spotify2](./images/Spotify2.PNG)
 
 ![Movie2](./images/Movie2.PNG)
-  
+
+![Concert](./images/Concert.PNG)
+
+![Spotify](./images/Spotify.PNG)
+
+![Movie](./images/Movie.PNG)
+
 
