@@ -36,8 +36,6 @@ The following packages are needed (npm install) to run the program
 
    * [Request](https://www.npmjs.com/package/request)
 
-   * [FS](https://www.npmjs.com/package/fs)
-
 ## Prior to Running the Program
 The Node-Spotify-APE requires a set of API Keys. Create a file named `.env`, add the following to it, replacing the values with your API keys (no quotes) once you have them:
 
